@@ -1,0 +1,166 @@
+type Arbitrator = record {
+  id : nat64;
+  name : text;
+  email : text;
+  expertise : text;
+  is_active : bool;
+  phone : text;
+  arbitratoridentity_id : text;
+};
+type ArbitratorIdentity = record { id : nat64; "principal" : text };
+type Buyer = record {
+  id : nat64;
+  name : text;
+  email : text;
+  purchased_land_titles : vec nat64;
+  phone : text;
+  buyeridentity_id : text;
+};
+type BuyerIdentity = record { id : nat64; "principal" : text };
+type Dispute = record {
+  id : nat64;
+  raised_by : nat64;
+  created_at : nat64;
+  comment : text;
+  land_title_id : nat64;
+  resolved_at : opt nat64;
+};
+type Error = variant {
+  TransferConflict : record { msg : text };
+  InvalidInput : record { msg : text };
+  NotFound : record { msg : text };
+  Unauthorized : record { msg : text };
+  AlreadyExists : record { msg : text };
+};
+type GovernmentOfficial = record {
+  id : nat64;
+  name : text;
+  email : text;
+  officialidentity_id : text;
+  is_active : bool;
+  phone : text;
+  department : text;
+};
+type LandTitle = record {
+  id : nat64;
+  landowner_id : nat64;
+  size : float64;
+  description : text;
+  is_available : bool;
+  price : nat64;
+  registered_at : nat64;
+  location : text;
+};
+type LandTransfer = record {
+  id : nat64;
+  landowner_id : nat64;
+  agreed_price : nat64;
+  approved_at : opt nat64;
+  transfer_status : text;
+  buyer_id : nat64;
+  initiated_at : nat64;
+  land_title_id : nat64;
+};
+type Landowner = record {
+  id : nat64;
+  name : text;
+  email : text;
+  is_verified : bool;
+  phone : text;
+  land_titles : vec nat64;
+  landowneridentity_id : text;
+};
+type Result = variant { Ok : Arbitrator; Err : Error };
+type Result_1 = variant { Ok : ArbitratorIdentity; Err : Error };
+type Result_10 = variant { Ok; Err : Error };
+type Result_2 = variant { Ok : Buyer; Err : Error };
+type Result_3 = variant { Ok : BuyerIdentity; Err : Error };
+type Result_4 = variant { Ok : Dispute; Err : Error };
+type Result_5 = variant { Ok : GovernmentOfficial; Err : Error };
+type Result_6 = variant { Ok : LandTitle; Err : Error };
+type Result_7 = variant { Ok : LandTransfer; Err : Error };
+type Result_8 = variant { Ok : Landowner; Err : Error };
+type Result_9 = variant { Ok : TransactionRecord; Err : Error };
+type TransactionRecord = record {
+  id : nat64;
+  transaction_type : text;
+  timestamp : nat64;
+  details : text;
+  land_title_id : nat64;
+};
+service : {
+  add_arbitrator : (text, text, text, text, text) -> (Result);
+  add_arbitrator_identity : (text) -> (Result_1);
+  add_buyer : (text, text, text, text) -> (Result_2);
+  add_buyer_identity : (text) -> (Result_3);
+  add_dispute : (nat64, nat64, text) -> (Result_4);
+  add_government_official : (text, text, text, text, text) -> (Result_5);
+  add_land_title : (nat64, text, float64, text, nat64) -> (Result_6);
+  add_land_transfer : (nat64, nat64, nat64, nat64) -> (Result_7);
+  add_landowner : (text, text, text, text) -> (Result_8);
+  add_landowner_identity : (text) -> (Result_3);
+  add_official_identity : (text) -> (Result_3);
+  add_transaction_record : (nat64, text, text) -> (Result_9);
+  delete_arbitrator : (nat64) -> (Result_10);
+  delete_arbitrator_identity : (nat64) -> (Result_10);
+  delete_buyer : (nat64) -> (Result_10);
+  delete_buyer_identity : (nat64) -> (Result_10);
+  delete_dispute : (nat64) -> (Result_10);
+  delete_government_official : (nat64) -> (Result_10);
+  delete_land_title : (nat64) -> (Result_10);
+  delete_land_transfer : (nat64) -> (Result_10);
+  delete_landowner : (nat64) -> (Result_10);
+  delete_landowner_identity : (nat64) -> (Result_10);
+  delete_official_identity : (nat64) -> (Result_10);
+  delete_transaction_record : (nat64) -> (Result_10);
+  get_arbitrator : (nat64) -> (Result) query;
+  get_arbitrator_identity : (nat64) -> (Result_3) query;
+  get_buyer : (nat64) -> (Result_2) query;
+  get_buyer_identity : (nat64) -> (Result_3) query;
+  get_dispute : (nat64) -> (Result_4) query;
+  get_land_title : (nat64) -> (Result_6) query;
+  get_land_transfer : (nat64) -> (Result_7) query;
+  get_landowner : (nat64) -> (Result_8) query;
+  get_landowner_identity : (nat64) -> (Result_3) query;
+  get_official : (nat64) -> (Result_5) query;
+  get_official_identity : (nat64) -> (Result_3) query;
+  get_transaction_record : (nat64) -> (Result_9) query;
+  update_arbitrator : (
+      nat64,
+      opt text,
+      opt text,
+      opt text,
+      opt text,
+      opt bool,
+    ) -> (Result);
+  update_buyer : (nat64, opt text, opt text, opt text) -> (Result_2);
+  update_dispute : (nat64, opt text, opt nat64) -> (Result_4);
+  update_government_official : (
+      nat64,
+      opt text,
+      opt text,
+      opt text,
+      opt text,
+      opt bool,
+    ) -> (Result_5);
+  update_land_title : (
+      nat64,
+      opt text,
+      opt float64,
+      opt text,
+      opt nat64,
+      opt bool,
+    ) -> (Result_6);
+  update_land_transfer : (
+      nat64,
+      opt nat64,
+      opt nat64,
+      opt nat64,
+      opt text,
+      opt nat64,
+    ) -> (Result_7);
+  update_landowner : (nat64, opt text, opt text, opt text, opt bool) -> (
+      Result_8,
+    );
+  update_transaction_record : (nat64, opt text, opt text) -> (Result_9);
+}

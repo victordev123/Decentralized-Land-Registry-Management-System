@@ -1,0 +1,1 @@
+/home/samdev/Decentralized-Land-Registry-Management-System/target/wasm32-unknown-unknown/release/icp_rust_boilerplate_backend.wasm: /home/samdev/Decentralized-Land-Registry-Management-System/src/icp_rust_boilerplate_backend/src/lib.rs
